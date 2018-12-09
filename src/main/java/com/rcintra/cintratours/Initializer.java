@@ -4,29 +4,33 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.rcintra.cintratours.model.Event;
 import com.rcintra.cintratours.model.Group;
-import com.rcintra.cintratours.repository.GroupRepository;
+import com.rcintra.cintratours.service.GroupService;
 
 @Component
 public class Initializer implements CommandLineRunner {
 	
-	private final GroupRepository repository;
+	/*private final GroupRepository repository;
 	
 	public Initializer(GroupRepository repository) {
 		this.repository = repository;
-	}
+	}*/
+	
+	@Autowired
+	private GroupService service;
 
 	@Override
 	public void run(String... args) throws Exception {
 		Stream.of("São Paulo", "Rio", 
 				"Minas Gerais", "Parana")
-				.forEach(name -> repository.save(new Group(name)));
+				.forEach(name -> service.save(new Group(name)));
 						
-		Group g = repository.findByName("Rio");
+		Group g = service.findByName("Rio");
 		
 		Event e = Event.builder().title("Full Stack Reactive")
 				.description("Reactive with Spring Boot + React")
@@ -34,9 +38,9 @@ public class Initializer implements CommandLineRunner {
 				.build();
 		
 		g.setEvents(Collections.singleton(e));
-		repository.save(g);
+		service.save(g);
 		
-		repository.findAll().forEach(System.out::println);
+		service.findAll().forEach(System.out::println);
 	}
 
 }

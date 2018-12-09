@@ -40,4 +40,10 @@ public class Group {
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<Event> events;
 	
+	public Group(Long id, String name, String address, String city) {
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.city = city;
+	}
 }
